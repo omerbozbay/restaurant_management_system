@@ -44,13 +44,12 @@ class FoodCard extends StatelessWidget {
                   child: Container(
                     color: Colors.grey[200],
                     width: double.infinity,
-                    child: Center(
-                      child: Icon(
-                        _getIconForFood(foodItem.name),
-                        size: 50,
-                        color: Colors.grey[400],
-                      ),
-                    ),
+                    child: Image.asset(
+                    foodItem.imageUrl,
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
                   ),
                 ),
                 // Add to cart button
@@ -126,15 +125,4 @@ class FoodCard extends StatelessWidget {
     );
   }
 
-  IconData _getIconForFood(String foodName) {
-    if (foodName.toLowerCase().contains('pilav')) {
-      return Icons.rice_bowl;
-    } else if (foodName.toLowerCase().contains('makarna')) {
-      return Icons.ramen_dining;
-    } else if (foodName.toLowerCase().contains('corba')) {
-      return Icons.soup_kitchen;
-    } else {
-      return Icons.fastfood;
-    }
-  }
 }

@@ -7,7 +7,7 @@ final FOOD_ITEMS = [
     name: 'Tavuk + Pilav',
     category: 'Yemek',
     price: 200,
-    imageUrl: '',
+    imageUrl: 'assets/tavukpilav.png',
     subCategory: 'Yemek',
   ),
   FoodItem(
@@ -15,7 +15,7 @@ final FOOD_ITEMS = [
     name: 'Tavuk + Makarna',
     category: 'Yemek',
     price: 180,
-    imageUrl: '',
+    imageUrl: 'assets/tavukmakarna.png',
     subCategory: 'Yemek',
   ),
   FoodItem(
@@ -23,7 +23,7 @@ final FOOD_ITEMS = [
     name: 'Adana Kebap + Pilav',
     category: 'Yemek',
     price: 350,
-    imageUrl: '',
+    imageUrl: 'assets/kebap.png',
     subCategory: 'Yemek',
   ),
   FoodItem(
@@ -31,23 +31,23 @@ final FOOD_ITEMS = [
     name: 'Lahmacun',
     category: 'Yemek',
     price: 80,
-    imageUrl: '',
+    imageUrl: 'assets/lahmacun.png',
     subCategory: 'Yemek',
   ),
   FoodItem(
     id: '5',
     name: 'Citir Tavuk',
-    category: 'Yemek',
+    category: 'Atistirmalik',
     price: 150,
-    imageUrl: '',
-    subCategory: 'Yemek',
+    imageUrl: 'assets/citirtavuk.png',
+    subCategory: 'Atistirmalik',
   ),
   FoodItem(
     id: '6',
     name: 'Patlican Kebabi',
     category: 'Yemek',
     price: 400,
-    imageUrl: '',
+    imageUrl: 'assets/patlicankebap.png',
     subCategory: 'Yemek',
   ),
   FoodItem(
@@ -55,7 +55,7 @@ final FOOD_ITEMS = [
     name: 'Ayran',
     category: 'Icecek',
     price: 20,
-    imageUrl: '',
+    imageUrl: 'assets/ayran.png',
     subCategory: 'Icecek',
   ),
   FoodItem(
@@ -63,7 +63,7 @@ final FOOD_ITEMS = [
     name: 'Kola',
     category: 'Icecek',
     price: 40,
-    imageUrl: '',
+    imageUrl: 'assets/kola.png',
     subCategory: 'Icecek',
   ),
   FoodItem(
@@ -71,7 +71,7 @@ final FOOD_ITEMS = [
     name: 'Patates Kizartmasi',
     category: 'Atistirmalik',
     price: 70,
-    imageUrl: '',
+    imageUrl: 'assets/patates.png',
     subCategory: 'Atistirmalik',
   ),
   FoodItem(
@@ -79,7 +79,7 @@ final FOOD_ITEMS = [
     name: 'Nugget',
     category: 'Atistirmalik',
     price: 70,
-    imageUrl: '',
+    imageUrl: 'assets/nugget.png',
     subCategory: 'Atistirmalik',
   ),
 ];

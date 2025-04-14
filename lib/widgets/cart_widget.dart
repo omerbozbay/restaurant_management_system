@@ -233,7 +233,7 @@ class _CartWidgetState extends State<CartWidget> {
                 const Divider(),
                 _buildSummaryRow(
                   'GENEL TOPLAM',
-                  'TL ${cart.totalAmount.toStringAsFixed(0)}',
+                  'TL ${cart.finalTotal.toStringAsFixed(0)}',
                   isBold: true,
                 ),
                 const SizedBox(height: 16),

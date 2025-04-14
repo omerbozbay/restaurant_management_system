@@ -1,20 +1,48 @@
-<<<<<<< HEAD
-# restaurant_management_system
+# 🧾 restaurant_management_system
 
-A new Flutter project.
+Bu proje, Flutter ile geliştirilen modern bir **Restoran Yönetim Sistemi** uygulamasıdır. Kullanıcılar yemekleri görüntüleyebilir, sepete ürün ekleyebilir ve ödeme seçenekleriyle sipariş oluşturabilir.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Özellikler
 
-A few resources to get you started if this is your first Flutter project:
+- 🍽️ Kategorilere göre yemek listeleme (Yemek, İçecek, Atıştırmalık)
+- 🖼️ Görsel destekli ürün kartları (`assets/` klasöründen)
+- 🛒 Sepete ürün ekleme / çıkarma / adet değiştirme
+- 💳 Ödeme tipi seçimi: Kredi Kartı, Nakit, Veresiye
+- 📦 Sipariş türü seçimi: Yerinde Yemek (Dine In), Paket Servis (To Go)
+- 🧾 Otomatik KDV hesaplama (%10)
+- 🧹 Sipariş tamamlandığında sepeti temizleme
+- 🌙 Modern, sade ve responsive kullanıcı arayüzü
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-=======
-# restaurant_management_system
->>>>>>> 078e3a44a391863e16d97a63fa5794e73418032f
+## 🧱 Kullanılan Teknolojiler
+
+- **Flutter** – UI geliştirme
+- **Dart** – Programlama dili
+- **Provider** – Durum yönetimi
+- **Material Design** – UI bileşenleri
+- **Asset Management** – Görsel kullanımı
+
+---
+
+## 📁 Klasör Yapısı
+
+```bash
+lib/
+├── main.dart
+├── models/
+│   ├── food_item.dart
+│   └── cart_item.dart
+├── providers/
+│   └── cart_provider.dart
+├── screens/
+│   └── home_screen.dart
+├── widgets/
+│   ├── food_card.dart
+│   ├── cart_widget.dart
+│   ├── sidebar.dart
+│   └── category_tabs.dart
+├── utils/
+│   └── constants.dart

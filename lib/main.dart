@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
+import 'package:restaurant_management_system/screens/login_screen.dart';
 import 'providers/cart_provider.dart';
 import 'screens/home_screen.dart';
 
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (ctx) => CartProvider(),
       child: MaterialApp(
-        title: 'Kardesler Kebap Salonu POS Sistemi',
+        title: 'Kardeşler Kebap Salonu POS Sistemi',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: const Color(0xFF2D4599),
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
             secondary: const Color(0xFF2D4599),
           ),
         ),
-        home: const HomeScreen(),
+        home: const LoginScreen(),
       ),
     );
   }

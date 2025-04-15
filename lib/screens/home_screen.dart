@@ -8,7 +8,7 @@ import '../widgets/cart_widget.dart';
 import '../utils/constants.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Kardesler Kebap Salonu',
+                                'KARDEŞLER KEBAP SALONU',
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               child: TextField(
                                 decoration: InputDecoration(
-                                  hintText: 'yemek, icecek vb. ara',
+                                  hintText: 'yemek, içecek vb. ara',
                                   prefixIcon: const Icon(Icons.search),
                                   border: InputBorder.none,
                                   contentPadding: const EdgeInsets.symmetric(vertical: 10),
@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(width: 16),
                           Text(
-                            'Siparisler #${cartProvider.orderNumber}',
+                            'Siparişler #${cartProvider.orderNumber}',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -162,8 +162,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String _getMonthName(int month) {
     const monthNames = [
-      'Ocak', 'Subat', 'Mart', 'Nisan', 'Mayis', 'Haziran',
-      'Temmuz', 'Agustos', 'Eylul', 'Ekim', 'Kasim', 'Aralik'
+      'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+      'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
     ];
     return monthNames[month - 1];
   }

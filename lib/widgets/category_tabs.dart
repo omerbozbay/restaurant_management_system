@@ -5,10 +5,10 @@ class CategoryTabs extends StatelessWidget {
   final Function(String) onSelectCategory;
 
   const CategoryTabs({
-    Key? key,
+    super.key,
     required this.selectedCategory,
     required this.onSelectCategory,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +18,8 @@ class CategoryTabs extends StatelessWidget {
         children: [
           _buildCategoryTab('Hepsi', 'Hepsi'),
           _buildCategoryTab('Yemek', 'Yemek'),
-          _buildCategoryTab('Icecek', 'Icecek'),
-          _buildCategoryTab('Atistirmalik', 'Atistirmalik'),
+          _buildCategoryTab('İçecek', 'İçecek'),
+          _buildCategoryTab('Atıştırmalık', 'Atıştırmalık'),
         ],
       ),
     );

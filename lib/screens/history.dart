@@ -1,41 +1,42 @@
 import 'package:flutter/material.dart';
 
 class HistoryScreen extends StatelessWidget {
-  const HistoryScreen({Key? key}) : super(key: key);
+  const HistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     // Örnek sipariş geçmişi verileri
     final orders = [
       {
-        'orderNumber': '#001',
-        'date': '3 November, 09:45',
-        'total': 150.0,
-        'status': 'Completed',
+        'siparisNo': '#001',
+        'tarih': '3 Kasım, 09:45',
+        'toplam': 150.0,
+        'durum': 'Tamamlandı',
       },
       {
-        'orderNumber': '#002',
-        'date': '3 November, 10:15',
-        'total': 200.0,
-        'status': 'Completed',
+        'siparisNo': '#002',
+        'tarih': '3 Kasım, 10:15',
+        'toplam': 200.0,
+        'durum': 'Tamamlandı',
       },
       {
-        'orderNumber': '#003',
-        'date': '3 November, 11:00',
-        'total': 300.0,
-        'status': 'Cancelled',
+        'siparisNo': '#003',
+        'tarih': '3 Kasım, 11:00',
+        'toplam': 300.0,
+        'durum': 'İptal Edildi',
       },
       {
-        'orderNumber': '#004',
-        'date': '3 November, 12:30',
-        'total': 250.0,
-        'status': 'Completed',
+        'siparisNo': '#004',
+        'tarih': '3 Kasım, 12:30',
+        'toplam': 250.0,
+        'durum': 'Tamamlandı',
       },
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Order History'),
+        title: const Text('Sipariş Geçmisi'),
+        foregroundColor: Colors.white,
         backgroundColor: const Color(0xFF2D4599),
       ),
       body: Padding(
@@ -52,7 +53,7 @@ class HistoryScreen extends StatelessWidget {
   }
 
   Widget _buildOrderCard(Map<String, dynamic> order) {
-    final isCompleted = order['status'] == 'Completed';
+    final isCompleted = order['durum'] == 'Tamamlandı';
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
@@ -64,7 +65,7 @@ class HistoryScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              order['orderNumber'],
+              order['siparisNo'],
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -72,17 +73,17 @@ class HistoryScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Date: ${order['date']}',
+              'tarih: ${order['tarih']}',
               style: const TextStyle(fontSize: 14, color: Colors.grey),
             ),
             const SizedBox(height: 8),
             Text(
-              'Total: \$${order['total'].toStringAsFixed(2)}',
+              'toplam: \$${order['toplam'].toStringAsFixed(2)}',
               style: const TextStyle(fontSize: 14),
             ),
             const SizedBox(height: 8),
             Text(
-              'Status: ${order['status']}',
+              'durum: ${order['durum']}',
               style: TextStyle(
                 fontSize: 14,
                 color: isCompleted ? Colors.green : Colors.red,
@@ -94,9 +95,10 @@ class HistoryScreen extends StatelessWidget {
                 // Sipariş detaylarını görüntüleme işlemi
               },
               style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
                 backgroundColor: const Color(0xFF2D4599),
               ),
-              child: const Text('View Details'),
+              child: const Text('Detayları Gör'),
             ),
           ],
         ),

@@ -3,23 +3,17 @@ import 'package:image_picker/image_picker.dart';
 
 class SettingsScreen extends StatelessWidget {
   final List<Map<String, String>> products = [
-    {'name': 'Es Americano', 'category': 'Minuman'},
-    {'name': 'Es Kopi Malaka', 'category': 'Minuman'},
-    {'name': 'Juice Alpukat', 'category': 'Minuman'},
-    {'name': 'Milk Shake Strawberry', 'category': 'Minuman'},
-    {'name': 'Juice Melon', 'category': 'Minuman'},
-    {'name': 'Milo', 'category': 'Minuman'},
-    {'name': 'Teh Tarik', 'category': 'Minuman'},
-    {'name': 'Siomay', 'category': 'Snack'},
+    {'name': 'Lahmacun', 'category': 'Yemek'},
   ];
 
-  SettingsScreen({Key? key}) : super(key: key);
+  SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: const Text('Ayarlar'),
+        foregroundColor: Colors.white,
         backgroundColor: const Color(0xFF2D4599),
       ),
       body: Row(
@@ -32,11 +26,11 @@ class SettingsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 20),
-                _buildSidebarItem(Icons.grid_view, 'Manage Products', isSelected: true),
-                _buildSidebarItem(Icons.discount, 'Kelola Diskon'),
-                _buildSidebarItem(Icons.print, 'Kelola Printer'),
-                _buildSidebarItem(Icons.calculate, 'Perhitungan Biaya'),
-                _buildSidebarItem(Icons.sync, 'Sync Data'),
+                _buildSidebarItem(Icons.grid_view, 'Ürünleri Yönet', isSelected: true),
+                _buildSidebarItem(Icons.discount, 'İndirimleri Yönet'),
+                _buildSidebarItem(Icons.print, 'Yazıcı Yönet'),
+                _buildSidebarItem(Icons.calculate, 'Maliyet Hesaplama'),
+                _buildSidebarItem(Icons.sync, 'Veri Senkronize'),
               ],
             ),
           ),
@@ -48,7 +42,7 @@ class SettingsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Manage Products',
+                    'Ürünleri Yönet',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -56,7 +50,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    'Manage products in your store',
+                    'Mağazadaki Ürünleri Yönet',
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   const SizedBox(height: 20),
@@ -97,7 +91,7 @@ class SettingsScreen extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 10),
                                   const Text(
-                                    'Add New Product',
+                                    'Yeni Ürün Ekle',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
@@ -185,11 +179,11 @@ class SettingsScreen extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () {},
-                  child: const Text('View'),
+                  child: const Text('Görüntüle'),
                 ),
                 TextButton(
                   onPressed: () {},
-                  child: const Text('Edit'),
+                  child: const Text('Düzenle'),
                 ),
               ],
             ),
@@ -203,7 +197,7 @@ class SettingsScreen extends StatelessWidget {
     final TextEditingController nameController = TextEditingController();
     final TextEditingController priceController = TextEditingController();
     final TextEditingController stockController = TextEditingController();
-    String selectedCategory = 'Minuman';
+    String selectedCategory = 'İçecek';
     final ImagePicker picker = ImagePicker();
     XFile? selectedImage;
 
@@ -214,7 +208,7 @@ class SettingsScreen extends StatelessWidget {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Add Product'),
+              const Text('Ürün Ekle'),
               IconButton(
                 icon: const Icon(Icons.close),
                 onPressed: () {
@@ -230,8 +224,8 @@ class SettingsScreen extends StatelessWidget {
                 TextField(
                   controller: nameController,
                   decoration: const InputDecoration(
-                    labelText: 'Product Name',
-                    hintText: 'Enter product name',
+                    labelText: 'Ürün Ismi',
+                    hintText: 'Ürün İsmi Girin',
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -239,32 +233,32 @@ class SettingsScreen extends StatelessWidget {
                 TextField(
                   controller: priceController,
                   decoration: const InputDecoration(
-                    labelText: 'Price',
-                    hintText: 'Enter price',
+                    labelText: 'Fiyat',
+                    hintText: 'Fiyat Girin',
                     border: OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 10),
-                const Text('Photo Product'),
+                const Text('Ürün Fotoğrafı'),
                 const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () async {
                     selectedImage = await picker.pickImage(source: ImageSource.gallery);
                     if (selectedImage != null) {
-                      print('Selected image path: ${selectedImage!.path}');
+                      print('Seçili resim yolu: ${selectedImage!.path}');
                     } else {
-                      print('No image selected.');
+                      print('Seçili resim yok');
                     }
                   },
-                child: const Text('Choose Photo'),
+                child: const Text('Fotoğraf Seç'),
               ),
                 const SizedBox(height: 10),
                 TextField(
                   controller: stockController,
                   decoration: const InputDecoration(
-                    labelText: 'Stock',
-                    hintText: 'Enter stock quantity',
+                    labelText: 'Stok',
+                    hintText: 'Stok miktarını girin',
                     border: OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.number,
@@ -272,7 +266,7 @@ class SettingsScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 DropdownButtonFormField<String>(
                   value: selectedCategory,
-                  items: ['Minuman', 'Snack']
+                  items: ['İçecek', 'Atıştırmalık']
                       .map((category) => DropdownMenuItem(
                             value: category,
                             child: Text(category),
@@ -282,7 +276,7 @@ class SettingsScreen extends StatelessWidget {
                     selectedCategory = value!;
                   },
                   decoration: const InputDecoration(
-                    labelText: 'Category',
+                    labelText: 'Kategori',
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -293,10 +287,10 @@ class SettingsScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // Save product logic
-                print('Product Saved: ${nameController.text}');
+                print('Ürün Kaydedildi: ${nameController.text}');
                 Navigator.of(context).pop();
               },
-              child: const Text('Save Product'),
+              child: const Text('Ürünü Kaydet'),
             ),
           ],
         );

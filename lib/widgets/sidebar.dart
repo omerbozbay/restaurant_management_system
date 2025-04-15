@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:restaurant_management_system/screens/login_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/settings.dart';
 import '../screens/history.dart';
-import '../screens/table_management.dart'; // Table Management ekranını ekliyoruz
+import '../screens/table_management.dart';
 
 class Sidebar extends StatelessWidget {
-  const Sidebar({Key? key}) : super(key: key);
+  const Sidebar({super.key});
 
   void _navigateTo(BuildContext context, Widget screen) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => screen));
@@ -42,15 +43,20 @@ class Sidebar extends StatelessWidget {
           ),
           const Spacer(),
           _buildSidebarItem(
-            context,
-            Icons.logout,
-            () {
-              // Logout işlemi
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Logged out')),
-              );
-            },
-          ),
+          context,
+          Icons.logout,
+          () {
+            // Logout işlemi yapılır
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Çıkış Yapıldı')),
+            );
+            
+            // Login ekranına yönlendirir
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (ctx) => const LoginScreen()),
+            );
+          },
+        ),
           const SizedBox(height: 20),
         ],
       ),

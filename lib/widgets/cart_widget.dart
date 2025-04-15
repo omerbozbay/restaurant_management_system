@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
 
 class CartWidget extends StatefulWidget {
-  const CartWidget({Key? key}) : super(key: key);
+  const CartWidget({super.key});
 
   @override
   _CartWidgetState createState() => _CartWidgetState();
@@ -12,6 +12,7 @@ class CartWidget extends StatefulWidget {
 class _CartWidgetState extends State<CartWidget> {
   int _selectedPaymentIndex = 0;
   
+  @override
   Widget build(BuildContext context) {
     final cart = Provider.of<CartProvider>(context);
     
@@ -54,7 +55,7 @@ class _CartWidgetState extends State<CartWidget> {
                 const Expanded(
                   flex: 2,
                   child: Text(
-                    'Urun',
+                    'Ürün',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -101,7 +102,7 @@ class _CartWidgetState extends State<CartWidget> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Urun Yok',
+                          'Ürün Yok',
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 16,
@@ -250,7 +251,7 @@ class _CartWidgetState extends State<CartWidget> {
                 ),
               ),
               child: const Text(
-                'Odemeye Devam Et',
+                'Ödeme İşlemi',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,

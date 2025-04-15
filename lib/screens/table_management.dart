@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
 
 class TableManagementScreen extends StatelessWidget {
-  const TableManagementScreen({Key? key}) : super(key: key);
+  const TableManagementScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     // Örnek masa verileri
-    final tables = [
-      {'name': 'Table 1', 'status': 'available'},
-      {'name': 'Table 2', 'status': 'available'},
-      {'name': 'Table 3', 'status': 'occupied', 'time': '3 November, 09:45'},
-      {'name': 'Table 4', 'status': 'occupied', 'time': '3 November, 08:40'},
-      {'name': 'Table 5', 'status': 'available'},
-      {'name': 'Table 6', 'status': 'occupied', 'time': '3 November, 08:51'},
-      {'name': 'Table 7', 'status': 'occupied', 'time': '3 November, 08:55'},
-      {'name': 'Table 8', 'status': 'available'},
-      {'name': 'Table 9', 'status': 'available'},
-      {'name': 'Table 10', 'status': 'available'},
-      {'name': 'Table 11', 'status': 'available'},
-      {'name': 'Table 12', 'status': 'available'},
+    final Tables = [
+      {'name': 'Masa 1', 'status': 'müsait'},
+      {'name': 'Masa 2', 'status': 'müsait'},
+      {'name': 'Masa 3', 'status': 'dolu', 'time': '3 Kasım, 09:45'},
+      {'name': 'Masa 4', 'status': 'dolu', 'time': '3 Kasım, 08:40'},
+      {'name': 'Masa 5', 'status': 'müsait'},
+      {'name': 'Masa 6', 'status': 'dolu', 'time': '3 Kasım, 08:51'},
+      {'name': 'Masa 7', 'status': 'dolu', 'time': '3 Kasım, 08:55'},
+      {'name': 'Masa 8', 'status': 'müsait'},
+      {'name': 'Masa 9', 'status': 'müsait'},
+      {'name': 'Masa 10', 'status': 'müsait'},
+      {'name': 'Masa 11', 'status': 'müsait'},
+      {'name': 'Masa 12', 'status': 'müsait'},
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Table Management'),
+        title: const Text('Masa Yonetimi'),
+        foregroundColor: Colors.white,
         backgroundColor: const Color(0xFF2D4599),
         actions: [
           TextButton(
@@ -31,7 +32,7 @@ class TableManagementScreen extends StatelessWidget {
               // Yeni masa oluşturma işlemi
             },
             child: const Text(
-              'Generate Table',
+              'Masayı Yonet',
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -46,18 +47,18 @@ class TableManagementScreen extends StatelessWidget {
             mainAxisSpacing: 16,
             childAspectRatio: 1.2,
           ),
-          itemCount: tables.length,
+          itemCount: Tables.length,
           itemBuilder: (context, index) {
-            final table = tables[index];
-            return _buildTableCard(table);
+            final Table = Tables[index];
+            return _buildTableCard(Table);
           },
         ),
       ),
     );
   }
 
-  Widget _buildTableCard(Map<String, dynamic> table) {
-    final isAvailable = table['status'] == 'available';
+  Widget _buildTableCard(Map<String, dynamic> Table) {
+    final isAvailable = Table['status'] == 'müsait';
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
@@ -68,7 +69,7 @@ class TableManagementScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              table['name'],
+              Table['name'],
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -77,8 +78,8 @@ class TableManagementScreen extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               isAvailable
-                  ? 'available'
-                  : 'occupied - ${table['time'] ?? ''}',
+                  ? 'müsait'
+                  : 'dolu - ${Table['time'] ?? ''}',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: isAvailable ? Colors.green : Colors.red,
@@ -93,7 +94,7 @@ class TableManagementScreen extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: isAvailable ? Colors.blue : Colors.red,
               ),
-              child: Text(isAvailable ? 'Open' : 'Close'),
+              child: Text(isAvailable ? 'Açık' : 'Kapalı'),
             ),
           ],
         ),

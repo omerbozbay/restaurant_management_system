@@ -1,6 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SettingsScreen extends StatelessWidget {
+  final List<Map<String, String>> products = [
+    {'name': 'Es Americano', 'category': 'Minuman'},
+    {'name': 'Es Kopi Malaka', 'category': 'Minuman'},
+    {'name': 'Juice Alpukat', 'category': 'Minuman'},
+    {'name': 'Milk Shake Strawberry', 'category': 'Minuman'},
+    {'name': 'Juice Melon', 'category': 'Minuman'},
+    {'name': 'Milo', 'category': 'Minuman'},
+    {'name': 'Teh Tarik', 'category': 'Minuman'},
+    {'name': 'Siomay', 'category': 'Snack'},
+  ];
+
+  SettingsScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,12 +68,49 @@ class SettingsScreen extends StatelessWidget {
                         mainAxisSpacing: 16,
                         childAspectRatio: 3 / 4,
                       ),
-                      itemCount: 6, // Example product count
+                      itemCount: products.length + 1, // +1 for "Add New Product" card
                       itemBuilder: (context, index) {
-                        return _buildProductCard(
-                          'Product ${index + 1}',
-                          'Minuman',
-                        );
+                        if (index == 0) {
+                          return GestureDetector(
+                            onTap: () {
+                              _showAddProductDialog(context);
+                            },
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.add,
+                                      size: 30,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    'Add New Product',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        } else {
+                          final product = products[index - 1];
+                          return _buildProductCard(product['name']!, product['category']!);
+                        }
                       },
                     ),
                   ),
@@ -145,6 +196,111 @@ class SettingsScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _showAddProductDialog(BuildContext context) {
+    final TextEditingController nameController = TextEditingController();
+    final TextEditingController priceController = TextEditingController();
+    final TextEditingController stockController = TextEditingController();
+    String selectedCategory = 'Minuman';
+    final ImagePicker picker = ImagePicker();
+    XFile? selectedImage;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Add Product'),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Product Name',
+                    hintText: 'Enter product name',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: priceController,
+                  decoration: const InputDecoration(
+                    labelText: 'Price',
+                    hintText: 'Enter price',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 10),
+                const Text('Photo Product'),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () async {
+                    selectedImage = await picker.pickImage(source: ImageSource.gallery);
+                    if (selectedImage != null) {
+                      print('Selected image path: ${selectedImage!.path}');
+                    } else {
+                      print('No image selected.');
+                    }
+                  },
+                child: const Text('Choose Photo'),
+              ),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: stockController,
+                  decoration: const InputDecoration(
+                    labelText: 'Stock',
+                    hintText: 'Enter stock quantity',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 10),
+                DropdownButtonFormField<String>(
+                  value: selectedCategory,
+                  items: ['Minuman', 'Snack']
+                      .map((category) => DropdownMenuItem(
+                            value: category,
+                            child: Text(category),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    selectedCategory = value!;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Category',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                // Save product logic
+                print('Product Saved: ${nameController.text}');
+                Navigator.of(context).pop();
+              },
+              child: const Text('Save Product'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -5,9 +5,9 @@ Bu proje, Flutter ile geliştirilen modern bir **Restoran Yönetim Sistemi** uyg
 ---
 
 ## 🚀 Özellikler
-
+- 🔐 Giriş Sistemi (Kullanıcı adı & şifre)
 - 🍽️ Kategorilere göre yemek listeleme (Yemek, İçecek, Atıştırmalık)
-- 🖼️ Görsel destekli ürün kartları (`assets/` klasöründen)
+- 🖼️ Görsel destekli ürün kartları
 - 🛒 Sepete ürün ekleme / çıkarma / adet değiştirme
 - 💳 Ödeme tipi seçimi: Kredi Kartı, Nakit, Veresiye
 - 📦 Sipariş türü seçimi: Yerinde Yemek (Dine In), Paket Servis (To Go)
@@ -27,22 +27,3 @@ Bu proje, Flutter ile geliştirilen modern bir **Restoran Yönetim Sistemi** uyg
 
 ---
 
-## 📁 Klasör Yapısı
-
-```bash
-lib/
-├── main.dart
-├── models/
-│   ├── food_item.dart
-│   └── cart_item.dart
-├── providers/
-│   └── cart_provider.dart
-├── screens/
-│   └── home_screen.dart
-├── widgets/
-│   ├── food_card.dart
-│   ├── cart_widget.dart
-│   ├── sidebar.dart
-│   └── category_tabs.dart
-├── utils/
-│   └── constants.dart

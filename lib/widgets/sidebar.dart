@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import '../screens/home_screen.dart';
+import '../screens/settings.dart';
+import '../screens/history.dart';
+import '../screens/table_management.dart'; // Table Management ekranını ekliyoruz
 
 class Sidebar extends StatelessWidget {
   const Sidebar({Key? key}) : super(key: key);
+
+  void _navigateTo(BuildContext context, Widget screen) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => screen));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,27 +20,48 @@ class Sidebar extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: 20),
-          _buildSidebarItem(Icons.grid_view, isSelected: true),
-          _buildSidebarItem(Icons.shopping_bag_outlined),
-          _buildSidebarItem(Icons.history),
-          _buildSidebarItem(Icons.settings),
+          _buildSidebarItem(
+            context,
+            Icons.grid_view,
+            () => _navigateTo(context, const HomeScreen()),
+          ),
+          _buildSidebarItem(
+            context,
+            Icons.table_bar, // Table Management ikonu
+            () => _navigateTo(context, const TableManagementScreen()),
+          ),
+          _buildSidebarItem(
+            context,
+            Icons.history,
+            () => _navigateTo(context, const HistoryScreen()),
+          ),
+          _buildSidebarItem(
+            context,
+            Icons.settings,
+            () => _navigateTo(context, SettingsScreen()),
+          ),
           const Spacer(),
-          _buildSidebarItem(Icons.logout),
+          _buildSidebarItem(
+            context,
+            Icons.logout,
+            () {
+              // Logout işlemi
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Logged out')),
+              );
+            },
+          ),
           const SizedBox(height: 20),
         ],
       ),
     );
   }
 
-  Widget _buildSidebarItem(IconData icon, {bool isSelected = false}) {
+  Widget _buildSidebarItem(BuildContext context, IconData icon, VoidCallback onPressed) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        color: isSelected ? Colors.white.withOpacity(0.1) : Colors.transparent,
-        borderRadius: BorderRadius.circular(10),
-      ),
       child: IconButton(
-        onPressed: () {},
+        onPressed: onPressed,
         icon: Icon(
           icon,
           color: Colors.white,

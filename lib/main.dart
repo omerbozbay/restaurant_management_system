@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_management_system/screens/login_screen.dart';
 import 'providers/cart_provider.dart';
-import 'screens/home_screen.dart';
+import 'providers/product_provider.dart'; // Ensure this is imported
 
 void main() {
   runApp(const MyApp());
@@ -13,8 +13,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) => CartProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (ctx) => CartProvider()),
+        ChangeNotifierProvider(create: (ctx) => ProductProvider()), // Ensure this is registered
+      ],
       child: MaterialApp(
         title: 'Kardeşler Kebap Salonu POS Sistemi',
         debugShowCheckedModeBanner: false,

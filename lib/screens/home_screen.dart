@@ -1,11 +1,15 @@
+// lib/screens/home_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../models/food_item.dart';
 import '../providers/cart_provider.dart';
+import '../providers/product_provider.dart';
 import '../widgets/sidebar.dart';
 import '../widgets/category_tabs.dart';
 import '../widgets/food_card.dart';
 import '../widgets/cart_widget.dart';
-import '../utils/constants.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,19 +32,18 @@ class _HomeScreenState extends State<HomeScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final isWideScreen = screenWidth > 1000;
 
-    List<dynamic> filteredItems = _selectedCategory == 'Hepsi'
-        ? FOOD_ITEMS
-        : FOOD_ITEMS.where((item) => item.category == _selectedCategory).toList();
+    final products = Provider.of<ProductProvider>(context).products;
+    final filteredItems = _selectedCategory == 'Hepsi'
+        ? products
+        : products.where((item) => item.category == _selectedCategory).toList();
 
     final cartProvider = Provider.of<CartProvider>(context);
 
     return Scaffold(
       body: Row(
         children: [
-          // Sidebar
           const Sidebar(),
-          
-          // Main content
+
           Expanded(
             flex: 7,
             child: Column(
@@ -86,7 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   hintText: 'yemek, içecek vb. ara',
                                   prefixIcon: const Icon(Icons.search),
                                   border: InputBorder.none,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(vertical: 10),
                                   hintStyle: TextStyle(color: Colors.grey[500]),
                                 ),
                               ),
@@ -110,19 +114,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                
-                // Food items and cart
+
+                // Food items & cart
                 Expanded(
                   child: Row(
                     children: [
-                      // Food items section
                       Expanded(
                         flex: isWideScreen ? 7 : 6,
                         child: Container(
                           padding: const EdgeInsets.all(16),
                           color: Colors.grey[100],
                           child: GridView.builder(
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: isWideScreen ? 3 : 2,
                               childAspectRatio: 1.1,
                               crossAxisSpacing: 15,
@@ -135,8 +139,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      
-                      // Cart section
                       if (isWideScreen)
                         const Expanded(
                           flex: 3,
@@ -148,8 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          
-          // Cart for smaller screens
+
           if (!isWideScreen)
             const Expanded(
               flex: 3,
@@ -162,8 +163,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String _getMonthName(int month) {
     const monthNames = [
-      'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
-      'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+      'Ocak',
+      'Şubat',
+      'Mart',
+      'Nisan',
+      'Mayıs',
+      'Haziran',
+      'Temmuz',
+      'Ağustos',
+      'Eylül',
+      'Ekim',
+      'Kasım',
+      'Aralık'
     ];
     return monthNames[month - 1];
   }

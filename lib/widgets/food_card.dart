@@ -1,27 +1,29 @@
+// lib/widgets/food_card.dart
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../models/food_item.dart';
 import '../providers/cart_provider.dart';
 
 class FoodCard extends StatelessWidget {
   final FoodItem foodItem;
 
-  const FoodCard({
-    super.key,
-    required this.foodItem,
-  });
+  const FoodCard({super.key, required this.foodItem});
 
   @override
   Widget build(BuildContext context) {
-    final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    
+    final cart = Provider.of<CartProvider>(context, listen: false);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withAlpha(25),
             spreadRadius: 1,
             blurRadius: 3,
             offset: const Offset(0, 1),
@@ -31,28 +33,28 @@ class FoodCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Food image
+          // Image & Add-to-cart button
           Expanded(
             child: Stack(
               children: [
-                // Image
                 ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(12),
                   ),
-                  child: Container(
-                    color: Colors.grey[200],
-                    width: double.infinity,
-                    child: Image.asset(
-                    foodItem.imageUrl,
-                    width: double.infinity,
-                    height: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                  ),
+                  child: foodItem.imageUrl.startsWith('assets/')
+                      ? Image.asset(
+                          foodItem.imageUrl,
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.file(
+                          File(foodItem.imageUrl),
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
                 ),
-                // Add to cart button
                 Positioned(
                   right: 8,
                   top: 8,
@@ -70,14 +72,7 @@ class FoodCard extends StatelessWidget {
                       padding: const EdgeInsets.all(4),
                       constraints: const BoxConstraints(),
                       onPressed: () {
-                        cartProvider.addItem(foodItem);
-                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('${foodItem.name} Sepete Eklendi'),
-                            duration: const Duration(seconds: 1),
-                          ),
-                        );
+                        cart.addItem(foodItem);
                       },
                     ),
                   ),
@@ -85,8 +80,8 @@ class FoodCard extends StatelessWidget {
               ],
             ),
           ),
-          
-          // Food details
+
+          // Details
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
@@ -103,11 +98,8 @@ class FoodCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  foodItem.subCategory,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[600],
-                  ),
+                  foodItem.category,
+                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -124,5 +116,4 @@ class FoodCard extends StatelessWidget {
       ),
     );
   }
-
 }

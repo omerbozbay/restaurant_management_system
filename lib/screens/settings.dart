@@ -1,300 +1,203 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
-class SettingsScreen extends StatelessWidget {
-  final List<Map<String, String>> products = [
-    {'name': 'Lahmacun', 'category': 'Yemek'},
-  ];
+import '../models/food_item.dart';
+import '../providers/product_provider.dart';
 
-  SettingsScreen({super.key});
+class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({Key? key}) : super(key: key);
+  @override
+  _SettingsScreenState createState() => _SettingsScreenState();
+}
 
+class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
+    final products = Provider.of<ProductProvider>(context).products;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ayarlar'),
-        foregroundColor: Colors.white,
+        title: const Text('Ürünleri Yönet'),
         backgroundColor: const Color(0xFF2D4599),
       ),
-      body: Row(
-        children: [
-          // Sidebar
-          Container(
-            width: 200,
-            color: const Color(0xFF2D4599),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20),
-                _buildSidebarItem(Icons.grid_view, 'Ürünleri Yönet', isSelected: true),
-                _buildSidebarItem(Icons.discount, 'İndirimleri Yönet'),
-                _buildSidebarItem(Icons.print, 'Yazıcı Yönet'),
-                _buildSidebarItem(Icons.calculate, 'Maliyet Hesaplama'),
-                _buildSidebarItem(Icons.sync, 'Veri Senkronize'),
-              ],
-            ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: 3 / 4,
           ),
-          // Main Content
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+          itemCount: products.length + 1,
+          itemBuilder: (ctx, i) {
+            if (i == 0) {
+              // Yeni ürün ekle kartı
+              return GestureDetector(
+                onTap: () => _showProductDialog(context),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.add, size: 40, color: Colors.blue),
+                      SizedBox(height: 8),
+                      Text('Yeni Ürün Ekle',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            final prod = products[i - 1];
+            return Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text(
-                    'Ürünleri Yönet',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Mağazadaki Ürünleri Yönet',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 20),
                   Expanded(
-                    child: GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
-                        childAspectRatio: 3 / 4,
-                      ),
-                      itemCount: products.length + 1, // +1 for "Add New Product" card
-                      itemBuilder: (context, index) {
-                        if (index == 0) {
-                          return GestureDetector(
-                            onTap: () {
-                              _showAddProductDialog(context);
-                            },
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 50,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[300],
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Icon(
-                                      Icons.add,
-                                      size: 30,
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  const Text(
-                                    'Yeni Ürün Ekle',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        } else {
-                          final product = products[index - 1];
-                          return _buildProductCard(product['name']!, product['category']!);
-                        }
-                      },
+                    child: prod.imageUrl.isNotEmpty
+                        ? prod.imageUrl.startsWith('assets/')
+                            ? Image.asset(prod.imageUrl, fit: BoxFit.cover)
+                            : Image.file(File(prod.imageUrl),
+                                fit: BoxFit.cover)
+                        : const Icon(Icons.image, size: 50),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(prod.name,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(prod.category,
+                        style: const TextStyle(color: Colors.grey)),
+                  ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.edit, color: Colors.orange),
+                          onPressed: () =>
+                              _showProductDialog(context, existing: prod),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed: () => Provider.of<ProductProvider>(
+                                  context,
+                                  listen: false)
+                              .deleteProduct(prod.id),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            ),
-          ),
-        ],
+            );
+          },
+        ),
       ),
     );
   }
 
-  Widget _buildSidebarItem(IconData icon, String title, {bool isSelected = false}) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: isSelected ? Colors.white.withOpacity(0.1) : Colors.transparent,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.white),
-          const SizedBox(width: 10),
-          Text(
-            title,
-            style: const TextStyle(color: Colors.white),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildProductCard(String productName, String category) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
-              ),
-              child: const Center(
-                child: Icon(Icons.image, size: 50, color: Colors.grey),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              productName,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
-              category,
-              style: const TextStyle(color: Colors.grey),
-            ),
-          ),
-          const Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  onPressed: () {},
-                  child: const Text('Görüntüle'),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text('Düzenle'),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showAddProductDialog(BuildContext context) {
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController priceController = TextEditingController();
-    final TextEditingController stockController = TextEditingController();
-    String selectedCategory = 'İçecek';
-    final ImagePicker picker = ImagePicker();
-    XFile? selectedImage;
+  void _showProductDialog(BuildContext ctx, {FoodItem? existing}) {
+    final isEditing = existing != null;
+    final nameC = TextEditingController(text: existing?.name ?? '');
+    final priceC =
+        TextEditingController(text: existing?.price.toString() ?? '');
+    String category = existing?.category ?? 'Yemek';
+    XFile? imageFile =
+        existing != null && existing.imageUrl.isNotEmpty ? XFile(existing.imageUrl) : null;
 
     showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      context: ctx,
+      builder: (_) => AlertDialog(
+        title: Text(isEditing ? 'Ürünü Düzenle' : 'Yeni Ürün Ekle'),
+        content: SingleChildScrollView(
+          child: Column(
             children: [
-              const Text('Ürün Ekle'),
-              IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  Navigator.of(context).pop();
+              TextField(
+                controller: nameC,
+                decoration: const InputDecoration(labelText: 'Ürün İsmi'),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: priceC,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'Fiyat'),
+              ),
+              const SizedBox(height: 10),
+              DropdownButtonFormField<String>(
+                value: category,
+                items: ['Yemek', 'İçecek', 'Atıştırmalık']
+                    .map((cat) =>
+                        DropdownMenuItem(value: cat, child: Text(cat)))
+                    .toList(),
+                onChanged: (v) => setState(() => category = v!),
+                decoration: const InputDecoration(labelText: 'Kategori'),
+              ),
+              const SizedBox(height: 10),
+              GestureDetector(
+                onTap: () async {
+                  final picked =
+                      await ImagePicker().pickImage(source: ImageSource.gallery);
+                  if (picked != null) {
+                    setState(() => imageFile = picked);
+                  }
                 },
+                child: Container(
+                  height: 100,
+                  width: double.infinity,
+                  color: Colors.grey[200],
+                  child: imageFile == null
+                      ? const Icon(Icons.image, size: 50)
+                      : Image.file(File(imageFile!.path), fit: BoxFit.cover),
+                ),
               ),
             ],
           ),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  controller: nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Ürün Ismi',
-                    hintText: 'Ürün İsmi Girin',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                TextField(
-                  controller: priceController,
-                  decoration: const InputDecoration(
-                    labelText: 'Fiyat',
-                    hintText: 'Fiyat Girin',
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.number,
-                ),
-                const SizedBox(height: 10),
-                const Text('Ürün Fotoğrafı'),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () async {
-                    selectedImage = await picker.pickImage(source: ImageSource.gallery);
-                    if (selectedImage != null) {
-                      print('Seçili resim yolu: ${selectedImage!.path}');
-                    } else {
-                      print('Seçili resim yok');
-                    }
-                  },
-                child: const Text('Fotoğraf Seç'),
-              ),
-                const SizedBox(height: 10),
-                TextField(
-                  controller: stockController,
-                  decoration: const InputDecoration(
-                    labelText: 'Stok',
-                    hintText: 'Stok miktarını girin',
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.number,
-                ),
-                const SizedBox(height: 10),
-                DropdownButtonFormField<String>(
-                  value: selectedCategory,
-                  items: ['İçecek', 'Atıştırmalık']
-                      .map((category) => DropdownMenuItem(
-                            value: category,
-                            child: Text(category),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    selectedCategory = value!;
-                  },
-                  decoration: const InputDecoration(
-                    labelText: 'Kategori',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ],
-            ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('İptal'),
           ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                // Save product logic
-                print('Ürün Kaydedildi: ${nameController.text}');
-                Navigator.of(context).pop();
-              },
-              child: const Text('Ürünü Kaydet'),
-            ),
-          ],
-        );
-      },
+          ElevatedButton(
+            onPressed: () {
+              final name = nameC.text.trim();
+              final price = double.tryParse(priceC.text) ?? 0.0;
+              if (name.isEmpty || price <= 0) return;
+
+              final newItem = FoodItem(
+                id: existing?.id ?? DateTime.now().toIso8601String(),
+                name: name,
+                category: category,
+                price: price,
+                imageUrl: imageFile?.path ?? '',
+                subCategory: category,
+              );
+              final prov =
+                  Provider.of<ProductProvider>(ctx, listen: false);
+              if (isEditing) {
+                prov.updateProduct(newItem);
+              } else {
+                prov.addProduct(newItem);
+              }
+              Navigator.of(ctx).pop();
+            },
+            child: Text(isEditing ? 'Güncelle' : 'Ekle'),
+          ),
+        ],
+      ),
     );
   }
 }

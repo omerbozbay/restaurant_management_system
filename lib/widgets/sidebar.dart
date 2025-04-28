@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:restaurant_management_system/screens/login_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/settings.dart';
@@ -29,12 +28,12 @@ class Sidebar extends StatelessWidget {
           _buildSidebarItem(
             context,
             Icons.table_bar, // Table Management ikonu
-            () => _navigateTo(context, const TableManagementScreen()),
+            () => _navigateTo(context, TableManagementScreen()),
           ),
           _buildSidebarItem(
             context,
             Icons.history,
-            () => _navigateTo(context, const HistoryScreen()),
+            () => _navigateTo(context, HistoryScreen()),
           ),
           _buildSidebarItem(
             context,

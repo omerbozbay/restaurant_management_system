@@ -6,10 +6,10 @@ class CartWidget extends StatefulWidget {
   const CartWidget({super.key});
 
   @override
-  _CartWidgetState createState() => _CartWidgetState();
+  CartWidgetState createState() => CartWidgetState();
 }
 
-class _CartWidgetState extends State<CartWidget> {
+class CartWidgetState extends State<CartWidget> {
   int _selectedPaymentIndex = 0;
   
   @override
@@ -208,10 +208,10 @@ class _CartWidgetState extends State<CartWidget> {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
+                  color: Colors.grey.withOpacity(0.1), // replaced with withOpacity(0.1)
                   spreadRadius: 1,
                   blurRadius: 3,
-                  offset: const Offset(0, -1),
+                  offset: const Offset(0, 1),
                 ),
               ],
             ),

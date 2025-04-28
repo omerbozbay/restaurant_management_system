@@ -1,7 +1,7 @@
 import '../models/food_item.dart';
 
 // Sample food items data
-final FOOD_ITEMS = [
+final foodItems = [
   FoodItem(
     id: '1',
     name: 'Tavuk + Pilav',

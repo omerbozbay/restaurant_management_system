@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_management_system/screens/login_screen.dart';
 import 'providers/cart_provider.dart';
-import 'providers/product_provider.dart'; // Ensure this is imported
+import 'providers/product_provider.dart';
+import 'providers/settings_provider.dart';
+import 'providers/table_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,11 +14,12 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
+  Widget build(BuildContext context) {    return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => CartProvider()),
-        ChangeNotifierProvider(create: (ctx) => ProductProvider()), // Ensure this is registered
+        ChangeNotifierProvider(create: (ctx) => ProductProvider()),
+        ChangeNotifierProvider(create: (ctx) => SettingsProvider()),
+        ChangeNotifierProvider(create: (ctx) => TableProvider()),
       ],
       child: MaterialApp(
         title: 'Kardeşler Kebap Salonu POS Sistemi',

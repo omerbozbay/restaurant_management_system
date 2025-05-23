@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_management_system/screens/login_screen.dart';
-import '../screens/home_screen.dart';
-import '../screens/settings.dart';
-import '../screens/history.dart';
-import '../screens/table_management.dart';
+import 'package:restaurant_management_system/screens/home_screen.dart';
+import 'package:restaurant_management_system/screens/settings.dart';
+import 'package:restaurant_management_system/screens/history.dart';
+import 'package:restaurant_management_system/screens/table_management.dart';
 
 class Sidebar extends StatelessWidget {
   const Sidebar({super.key});
@@ -24,21 +24,19 @@ class Sidebar extends StatelessWidget {
             context,
             Icons.grid_view,
             () => _navigateTo(context, const HomeScreen()),
-          ),
-          _buildSidebarItem(
+          ),          _buildSidebarItem(
             context,
             Icons.table_bar, // Table Management ikonu
-            () => _navigateTo(context, TableManagementScreen()),
+            () => _navigateTo(context, const TableManagementScreen()),
           ),
           _buildSidebarItem(
             context,
             Icons.history,
-            () => _navigateTo(context, HistoryScreen()),
-          ),
-          _buildSidebarItem(
+            () => _navigateTo(context, const HistoryScreen()),
+          ),          _buildSidebarItem(
             context,
             Icons.settings,
-            () => _navigateTo(context, SettingsScreen()),
+            () => _navigateTo(context, const SettingsScreen()),
           ),
           const Spacer(),
           _buildSidebarItem(

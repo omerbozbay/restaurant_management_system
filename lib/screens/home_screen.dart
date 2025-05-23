@@ -2,10 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../models/food_item.dart';
 import '../providers/cart_provider.dart';
 import '../providers/product_provider.dart';
+import '../models/food_item.dart';
 import '../widgets/sidebar.dart';
 import '../widgets/category_tabs.dart';
 import '../widgets/food_card.dart';
@@ -20,6 +19,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String _selectedCategory = 'Hepsi';
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
 
   void _selectCategory(String category) {
     setState(() {
@@ -27,15 +28,34 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _onSearchChanged(String query) {
+    setState(() {
+      _searchQuery = query.toLowerCase();
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isWideScreen = screenWidth > 1000;
-
-    final products = Provider.of<ProductProvider>(context).products;
-    final filteredItems = _selectedCategory == 'Hepsi'
+    final isWideScreen = screenWidth > 1000;    final products = Provider.of<ProductProvider>(context).products;
+    
+    // Önce kategoriye göre filtrele
+    List<FoodItem> filteredItems = _selectedCategory == 'Hepsi'
         ? products
         : products.where((item) => item.category == _selectedCategory).toList();
+    
+    // Sonra arama sorgusuna göre filtrele
+    if (_searchQuery.isNotEmpty) {
+      filteredItems = filteredItems.where((item) => 
+        item.name.toLowerCase().contains(_searchQuery)
+      ).toList();
+    }
 
     final cartProvider = Provider.of<CartProvider>(context);
 
@@ -54,9 +74,33 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.white,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+                    children: [                      Row(
                         children: [
+                          // Logo next to restaurant name
+                          Container(
+                            width: 50,
+                            height: 50,
+                            margin: const EdgeInsets.only(right: 12),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.asset(
+                                'assets/logo.jpg',
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -83,8 +127,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               decoration: BoxDecoration(
                                 color: Colors.grey[200],
                                 borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: TextField(
+                              ),                              child: TextField(
+                                controller: _searchController,
+                                onChanged: _onSearchChanged,
                                 decoration: InputDecoration(
                                   hintText: 'yemek, içecek vb. ara',
                                   prefixIcon: const Icon(Icons.search),

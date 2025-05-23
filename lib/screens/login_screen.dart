@@ -37,20 +37,36 @@ class _LoginScreenState extends State<LoginScreen> {
               color: const Color(0xFF2D4599),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Logo üstte
+                children: [                  // Logo üstte - enlarged with radius
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: Image.asset(
-                      'assets/logo.jpg',
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
+                    padding: const EdgeInsets.only(bottom: 24.0),
+                    child: Container(
+                      width: 150,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(
+                          'assets/logo.jpg',
+                          width: 150,
+                          height: 150,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
                   // Marka adı altta
                   const Text(
-                    'Kardeşler Kebap',
+                    'Kardeşler Kebap Salonu',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 28,

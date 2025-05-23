@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
+import '../providers/settings_provider.dart';
+import '../screens/payment_screen.dart';
 
 class CartWidget extends StatefulWidget {
   const CartWidget({super.key});
@@ -10,11 +12,10 @@ class CartWidget extends StatefulWidget {
 }
 
 class CartWidgetState extends State<CartWidget> {
-  int _selectedPaymentIndex = 0;
-  
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<CartProvider>(context);
+    final settings = Provider.of<SettingsProvider>(context);
     
     return Container(
       color: Colors.white,
@@ -206,42 +207,34 @@ class CartWidgetState extends State<CartWidget> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1), // replaced with withOpacity(0.1)
+              boxShadow: [                BoxShadow(
+                  color: Colors.grey.withValues(alpha: 0.1),
                   spreadRadius: 1,
                   blurRadius: 3,
                   offset: const Offset(0, 1),
                 ),
               ],
-            ),
-            child: Column(
+            ),            child: Column(
               children: [
-                // Payment information icons
-                Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildPaymentInfoItem(Icons.credit_card, 'Kredi Kartı', 0),
-                  _buildPaymentInfoItem(Icons.money, 'Nakit', 1),
-                  _buildPaymentInfoItem(Icons.local_atm, 'Veresiye', 2),
-                ],
-                ),
-                const SizedBox(height: 16),
-                
                 // Order summary
-                _buildSummaryRow('KDV 10%', 'TL ${cart.tax.toStringAsFixed(0)}'),
+                _buildSummaryRow('KDV ${settings.taxRatePercentage}', 'TL ${cart.getTax(settings.taxRate).toStringAsFixed(0)}'),
                 _buildSummaryRow('İndirim', 'TL 0'),
                 const Divider(),
                 _buildSummaryRow(
                   'GENEL TOPLAM',
-                  'TL ${cart.finalTotal.toStringAsFixed(0)}',
+                  'TL ${cart.getFinalTotal(settings.taxRate).toStringAsFixed(0)}',
                   isBold: true,
                 ),
                 const SizedBox(height: 16),
-                
-                // Proceed to payment button
+                  // Proceed to payment button
               ElevatedButton(
-              onPressed: cart.items.isEmpty ? null : () {},
+              onPressed: cart.items.isEmpty ? null : () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const PaymentScreen(),
+                  ),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: const Color(0xFF2D4599),
@@ -293,48 +286,6 @@ class CartWidgetState extends State<CartWidget> {
       ),
     );
   }
-
-  Widget _buildPaymentInfoItem(IconData icon, String label, int index) {
-  final isSelected = _selectedPaymentIndex == index;
-
-  return GestureDetector(
-    onTap: () {
-      setState(() {
-        _selectedPaymentIndex = index;
-      });
-    },
-    child: Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: isSelected ? Colors.blue[800] : Colors.grey[100],
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: isSelected ? Colors.blue : Colors.transparent,
-              width: 2,
-            ),
-          ),
-          child: Icon(
-            icon,
-            color: isSelected ? Colors.white : Colors.blue[800],
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: isSelected ? Colors.blue[800] : Colors.grey[700],
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-
   Widget _buildSummaryRow(String label, String value, {bool isBold = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
@@ -357,6 +308,4 @@ class CartWidgetState extends State<CartWidget> {
       ),
     );
   }
-  
-
 }

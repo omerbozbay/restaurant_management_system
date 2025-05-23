@@ -8,13 +8,20 @@ class CartProvider with ChangeNotifier {
   final List<CartItem> _items = [];
   OrderType _orderType = OrderType.dineIn;
   int _orderNumber = 1;
+  String? _selectedTable; // Seçili masa
 
   List<CartItem> get items => [..._items];
   OrderType get orderType => _orderType;
   int get orderNumber => _orderNumber;
+  String? get selectedTable => _selectedTable;
 
   void setOrderType(OrderType type) {
     _orderType = type;
+    notifyListeners();
+  }
+
+  void setSelectedTable(String? tableName) {
+    _selectedTable = tableName;
     notifyListeners();
   }
 
@@ -27,13 +34,12 @@ class CartProvider with ChangeNotifier {
   }
 
 
-
-  double get tax {
-    return totalAmount * 0.10; // 10% vergi (KDV)
+  double getTax(double taxRate) {
+    return totalAmount * taxRate;
   }
 
-  double get finalTotal {
-    return totalAmount + tax;
+  double getFinalTotal(double taxRate) {
+    return totalAmount + getTax(taxRate);
   }
 
   void addItem(FoodItem foodItem) {
@@ -84,9 +90,9 @@ class CartProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-
   void clearCart() {
     _items.clear();
+    _selectedTable = null; // Masa seçimini sıfırla
     _orderNumber++;
     notifyListeners();
   }
